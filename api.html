@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blob to Raw Redirect</title>
+</head>
+<body>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const blobUrl = params.get("url");
+
+    if (blobUrl && blobUrl.includes("github.com") && blobUrl.includes("/blob/")) {
+      // تحويل رابط GitHub blob إلى raw
+      const rawUrl = blobUrl
+        .replace("https://github.com/", "https://raw.githubusercontent.com/")
+        .replace("/blob/", "/");
+
+      // توجيه مباشر
+      window.location.href = rawUrl;
+    } else {
+      // إذا ما في بارامتر، توجه للموقع الرئيسي
+      window.location.href = "https://ahmed-zx9123.github.io/";
+    }
+  </script>
+</body>
+</html>
