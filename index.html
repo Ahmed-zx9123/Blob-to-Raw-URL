@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blob to Raw URL</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    textarea, button {
+      width: 100%;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result-block {
+      padding: 10px;
+      background: #f1f1f1;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+    .result-block h3 {
+      margin: 0 0 6px;
+    }
+    a {
+      word-break: break-all;
+      color: #007bff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Blob to Raw URL</h1>
+
+  <textarea id="input" placeholder="Paste a GitHub blob URL here..."></textarea>
+  <button onclick="convert()">Convert</button>
+
+  <div id="output"></div>
+
+  <script>
+    function convert() {
+      const input = document.getElementById('input').value.trim();
+      const output = document.getElementById('output');
+      output.innerHTML = '';
+
+      try {
+        const url = new URL(input);
+        const parts = url.pathname.split('/').filter(Boolean);
+
+        const blobIndex = parts.indexOf('blob');
+        if (blobIndex === -1 || blobIndex + 2 >= parts.length) {
+          throw new Error('Invalid blob URL');
+        }
+
+        const username = parts[0];
+        const repo = parts[1];
+        const branch = parts[blobIndex + 1];
+        const filePathParts = parts.slice(blobIndex + 2);
+        const filePath = filePathParts.join('/');
+        const fileName = filePathParts[filePathParts.length - 1];
+        const rawUrl = `https://raw.githubusercontent.com/${username}/${repo}/${branch}/${filePath}`;
+
+        output.innerHTML = `
+          <div class="result-block">
+            <h3>${fileName}</h3>
+            <a href="${rawUrl}" target="_blank">${rawUrl}</a>
+          </div>
+        `;
+      } catch (e) {
+        output.innerHTML = `
+          <div class="result-block">
+            <h3>Invalid URL</h3>
+            <p>${input}</p>
+          </div>
+        `;
+      }
+    }
+  </script>
+
+</body>
+</html><footer>from Riva tech</footer><a href="https://github.com/Ahmed-zx9123/Blob-to-Raw-URL/tree/main">go to Repository on GitHub</a></a>
