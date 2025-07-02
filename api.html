@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Blob to Raw Redirect</title>
+  <meta charset="UTF-8" />
+  <title>API</title>
 </head>
 <body>
+  <pre id="output"></pre>
   <script>
     const params = new URLSearchParams(window.location.search);
     const blobUrl = params.get("url");
 
-    if (blobUrl && blobUrl.includes("github.com") && blobUrl.includes("/blob/")) {
-      // تحويل رابط GitHub blob إلى raw
-      const rawUrl = blobUrl
+    function convert(blob) {
+      return blob
         .replace("https://github.com/", "https://raw.githubusercontent.com/")
         .replace("/blob/", "/");
+    }
 
-      // توجيه مباشر
-      window.location.href = rawUrl;
+    const output = document.getElementById("output");
+
+    if (blobUrl && blobUrl.includes("github.com") && blobUrl.includes("/blob/")) {
+      output.textContent = convert(blobUrl);
     } else {
-      // إذا ما في بارامتر، توجه للموقع الرئيسي
-      window.location.href = "https://ahmed-zx9123.github.io/";
+      output.textContent = "Error: invalid or missing 'url' parameter.";
     }
   </script>
 </body>
